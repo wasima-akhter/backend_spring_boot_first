@@ -1,0 +1,26 @@
+Do these now
+brew services start postgresql@18
+psql postgres
+
+Inside PostgreSQL:
+
+\du
+
+Then:
+
+\q
+
+Then:
+
+createdb backend_db
+psql backend_db
+
+Inside it:
+
+SELECT version();
+
+and:
+
+\q
+
+Once that works, tell me done, and we'll configure the Spring Boot connection properly.
