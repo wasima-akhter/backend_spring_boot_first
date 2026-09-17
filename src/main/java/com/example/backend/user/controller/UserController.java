@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backend.user.dto.LoginRequest;
+import com.example.backend.user.dto.LoginResponse;
 import com.example.backend.user.dto.PostCreateRequest;
 import com.example.backend.user.dto.PostResponse;
 import com.example.backend.user.dto.UserCreateRequest;
@@ -39,7 +41,16 @@ public class UserController {
       @Valid @RequestBody UserCreateRequest request) {
     return userService.createUser(
         request.getName(),
-        request.getEmail());
+        request.getEmail(),
+        request.getPassword());
+  }
+
+  @PostMapping("/api/v1/login")
+  public LoginResponse login(
+      @Valid @RequestBody LoginRequest request) {
+    return userService.login(
+        request.getEmail(),
+        request.getPassword());
   }
 
   @GetMapping("/api/v1/all-users")

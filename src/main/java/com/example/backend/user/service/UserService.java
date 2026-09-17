@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.backend.user.dto.LoginResponse;
 import com.example.backend.user.dto.PostCreateRequest;
 import com.example.backend.user.dto.PostResponse;
 import com.example.backend.user.dto.UserResponse;
@@ -13,6 +17,7 @@ import com.example.backend.user.dto.UserUpdateRequest;
 import com.example.backend.user.entity.Post;
 import com.example.backend.user.entity.User;
 import com.example.backend.user.exception.EmailAlreadyExistsException;
+import com.example.backend.user.exception.InvalidCredentialsException;
 import com.example.backend.user.exception.UserNotFoundException;
 import com.example.backend.user.repository.PostRepository;
 import com.example.backend.user.repository.UserRepository;
@@ -24,22 +29,52 @@ public class UserService {
 
   private final PostRepository postRepository;
 
-  public UserService(UserRepository userRepository, PostRepository postRepository) {
+  private final PasswordEncoder passwordEncoder;
+
+  private final AuthenticationManager authenticationManager;
+
+  public UserService(UserRepository userRepository, PostRepository postRepository, PasswordEncoder passwordEncoder,
+      AuthenticationManager authenticationManager) {
     this.userRepository = userRepository;
     this.postRepository = postRepository;
+    this.passwordEncoder = passwordEncoder;
+    this.authenticationManager = authenticationManager;
 
   }
 
-  public UserResponse createUser(String name, String email) {
+  public UserResponse createUser(String name, String email, String password) {
 
     if (userRepository.existsByEmail(email)) {
       throw new EmailAlreadyExistsException(email);
     }
-    User user = new User(name, email);
+
+    //
+    String hashedPassword = passwordEncoder.encode(password);
+
+    User user = new User(name, email, hashedPassword);
 
     User savedUser = userRepository.save(user);
 
     return toResponse(savedUser);
+  }
+
+  // ------
+  //
+
+  public LoginResponse login(String email, String password) {
+
+    User user = userRepository.findByEmail(email)
+        .orElseThrow(InvalidCredentialsException::new);
+
+    authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(
+            email,
+            password));
+
+    return new LoginResponse(
+        user.getId(),
+        user.getName(),
+        user.getEmail());
   }
 
   // public List<UserResponse> getAllUsers() {
@@ -119,6 +154,22 @@ public class UserService {
 
   }
 }
+
+//
+/*
+ * authenticationManager.authenticate(
+ * new UsernamePasswordAuthenticationToken(
+ * email,
+ * password
+ * )
+ * );
+ *
+ * we are essentially saying:
+ *
+ * Spring Security, please authenticate this email/password combination.
+ */
+
+// ----
 
 // Postman
 // ↓
