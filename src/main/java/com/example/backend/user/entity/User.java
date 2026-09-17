@@ -1,10 +1,15 @@
 
 package com.example.backend.user.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,7 +22,11 @@ public class User {
 
   private String name;
 
+  @Column(unique = true, nullable = false)
   private String email;
+
+  @OneToMany(mappedBy = "user")
+  private List<Post> posts = new ArrayList<>();
 
   public User() {
   }
@@ -47,3 +56,25 @@ public class User {
     this.email = email;
   }
 }
+
+/*
+ * @OneToMany(mappedBy = "user")
+ *
+ * means:
+ *
+ * "The relationship is already controlled by the user field inside Post."
+ *
+ * In other words:
+ *
+ * User
+ * │
+ * │ @OneToMany
+ * │ mappedBy = "user"
+ * ↓
+ * Post.user
+ * │
+ * │ @ManyToOne
+ * │ @JoinColumn
+ * ↓
+ * posts.user_id
+ */

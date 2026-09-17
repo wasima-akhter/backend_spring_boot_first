@@ -24,3 +24,26 @@ and:
 \q
 
 Once that works, tell me done, and we'll configure the Spring Boot connection properly.
+
+
+✅ 1. Spring Boot project setup
+✅ 2. PostgreSQL connection
+✅ 3. Controller / Service / Repository
+✅ 4. CRUD
+✅ 5. DTOs
+✅ 6. Validation
+✅ 7. Global exception handling
+
+👉 8. Database constraints + unique email
+👉 9. Optional + Java fundamentals
+👉 10. JPA relationships
+👉 11. Pagination + sorting
+👉 12. Authentication
+👉 13. JWT + Spring Security
+👉 14. Authorization / roles
+👉 15. Transactions
+👉 16. Database migrations (Flyway)
+👉 17. API documentation (OpenAPI/Swagger)
+👉 18. Testing
+👉 19. Production configuration
+👉 20. Docker/deployment
