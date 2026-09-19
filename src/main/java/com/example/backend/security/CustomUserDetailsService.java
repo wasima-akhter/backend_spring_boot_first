@@ -33,3 +33,28 @@ public class CustomUserDetailsService implements UserDetailsService {
         .build();
   }
 }
+
+/*
+ * 
+ * ┌─────────────────────────────────────┐
+ * │ Your application │
+ * │ │
+ * │ User entity │
+ * │ id, name, email, password, posts │
+ * └──────────────────┬──────────────────┘
+ * │
+ * │ convert
+ * ▼
+ * ┌─────────────────────────────────────┐
+ * │ Spring Security │
+ * │ │
+ * │ UserDetails │
+ * │ username, password, authorities │
+ * └──────────────────┬──────────────────┘
+ * │
+ * ▼
+ * AuthenticationManager
+ * │
+ * ▼
+ * Authentication result
+ */
