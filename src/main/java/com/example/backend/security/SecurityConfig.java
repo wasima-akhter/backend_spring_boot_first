@@ -28,7 +28,10 @@ public class SecurityConfig {
 
     httpSecurity.csrf(t -> t.disable())
         .authorizeHttpRequests(
-            t -> t.requestMatchers("/hello", "/api/v1/create-user", "/api/v1/login").permitAll().anyRequest()
+            t -> t.requestMatchers("/hello",
+                "/api/v1/getName/{id}",
+                "/api/v1/user/{userId}/posts",
+                "/api/v1/create-user", "/api/v1/login").permitAll().anyRequest()
                 .authenticated());
 
     return httpSecurity.build();

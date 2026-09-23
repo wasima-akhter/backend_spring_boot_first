@@ -86,7 +86,7 @@ public class UserController {
     return userService.createPost(userId, request);
   }
 
-  @GetMapping("api/v1/user/{userId}/posts")
+  @GetMapping("/api/v1/user/{userId}/posts")
   public List<PostResponse> getPostsByUserId(@PathVariable Long userId) {
     return userService.getPostsByUserId(userId);
   }
