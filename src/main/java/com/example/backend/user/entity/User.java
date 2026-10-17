@@ -4,6 +4,7 @@ package com.example.backend.user.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +28,7 @@ public class User {
 
   private String password;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Post> posts = new ArrayList<>();
 
   public User() {
@@ -65,6 +66,14 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public List<Post> getPosts() {
+    return posts;
+  }
+
+  public void setPosts(List<Post> posts) {
+    this.posts = posts;
   }
 }
 

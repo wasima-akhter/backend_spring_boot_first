@@ -90,6 +90,11 @@ public class UserController {
   public List<PostResponse> getPostsByUserId(@PathVariable Long userId) {
     return userService.getPostsByUserId(userId);
   }
+
+  @GetMapping("/api/v1/user/{userId}/posts_paged")
+  public Page<PostResponse> getPostsByUser_Id(@PathVariable Long userId, Pageable pageable) {
+    return userService.getPostsByUser_Id(userId, pageable);
+  }
 }
 
 // Security
