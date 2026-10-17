@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.backend.user.dto.LoginResponse;
 import com.example.backend.user.dto.PostCreateRequest;
@@ -87,6 +88,40 @@ public class UserService {
 
     return userRepository.findAll(pageable)
         .map(this::toResponse);
+
+    // Page<UserResponse> looks like:
+    /*
+     * {
+     * "content": [],
+     * "empty": true,
+     * "first": true,
+     * "last": true,
+     * "number": 0,
+     * "numberOfElements": 0,
+     * "pageable": {
+     * "offset": 0,
+     * "pageNumber": 0,
+     * "pageSize": 20,
+     * "paged": true,
+     * "sort": {
+     * "empty": true,
+     * "sorted": false,
+     * "unsorted": true
+     * },
+     * "unpaged": false
+     * },
+     * "size": 20,
+     * "sort": {
+     * "empty": true,
+     * "sorted": false,
+     * "unsorted": true
+     * },
+     * "totalElements": 0,
+     * "totalPages": 0
+     * }
+     *
+     */
+
   }
 
   public UserResponse getuserById(Long id) {
@@ -107,6 +142,7 @@ public class UserService {
     return toResponse(updatedUser);
   }
 
+  @Transactional
   public void deleteUser(Long id) {
 
     User user = userRepository.findById(id)
@@ -144,14 +180,29 @@ public class UserService {
 
   public List<PostResponse> getPostsByUserId(Long userId) {
 
-    userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    userRepository.findById(userId)
+        .orElseThrow(() -> new UserNotFoundException(userId));
 
-    return postRepository.findById(userId).stream().map(post -> new PostResponse(
+    return postRepository.findByUserId(userId)
+        .stream()
+        .map(post -> new PostResponse(
+            post.getId(),
+            post.getTitle(),
+            post.getUser().getId()))
+        .toList();
+  }
 
-        post.getId(),
-        post.getTitle(),
-        post.getUser().getId())).toList();
+  public Page<PostResponse> getPostsByUser_Id(
+      Long userId, Pageable pageable) {
 
+    userRepository.findById(userId)
+        .orElseThrow(() -> new UserNotFoundException(userId));
+
+    return postRepository.findByUser_Id(userId, pageable)
+        .map(post -> new PostResponse(
+            post.getId(),
+            post.getTitle(),
+            post.getUser().getId()));
   }
 }
 

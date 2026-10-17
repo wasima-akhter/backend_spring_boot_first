@@ -118,7 +118,7 @@ public class StudyNoteController {
     // Execution: GET
     // /api/products?search=phone&category=electronics&minPrice=500&maxPrice=1500&page=0&size=20
     @GetMapping("/products")
-    public ResponseEntity<Page<String>> getProducts(
+    public ResponseEntity<Page<String>> getProductsCombined(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) Double minPrice,
@@ -145,7 +145,7 @@ public class StudyNoteController {
     // fallbacks
     // Execution: GET
     // /api/products?search=phone&category=electronics&minPrice=500&maxPrice=1500&page=0&size=20
-    @GetMapping("/products")
+    @GetMapping("/products-combined")
     public ResponseEntity<Page<String>> getProducts(
             @RequestParam Optional<String> search,
             @RequestParam Optional<String> category,
