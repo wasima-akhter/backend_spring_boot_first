@@ -35,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 }
 
 /*
- * 
+ *
  * ┌─────────────────────────────────────┐
  * │ Your application │
  * │ │

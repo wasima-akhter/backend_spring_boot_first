@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
     return problem;
   }
 
-  //
+  // 409
   @ExceptionHandler(EmailAlreadyExistsException.class)
   public ProblemDetail handleEmailAlreadyExistsException(
       EmailAlreadyExistsException exception,
@@ -126,4 +126,3 @@ public class GlobalExceptionHandler {
   }
 
 }
-
